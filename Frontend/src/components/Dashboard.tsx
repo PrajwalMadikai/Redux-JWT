@@ -1,9 +1,11 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
+import { clearAdmin } from '../slices/adminSlice';
+import { AppDispatch } from '../store/store';
 type User = {
   id: string;
   email: string;
@@ -13,6 +15,9 @@ type User = {
 Modal.setAppElement('#root');
 
 const Dashboard: React.FC = () => {
+
+  const dispatch=useDispatch<AppDispatch>()
+
   const navigate = useNavigate();
 
   const [users, setUsers] = useState<User[]>([]);
@@ -32,6 +37,7 @@ const Dashboard: React.FC = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
+      
       let response = await axios.get('http://localhost:3000/admin/users', {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -155,12 +161,9 @@ const Dashboard: React.FC = () => {
 
   const handleAdminLogout = async () => {
     try {
-      let res = await axios.post('http://localhost:3000/admin/logout', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      let res = await axios.post('http://localhost:3000/admin/logout');
       if (res.status === 200) {
+        dispatch(clearAdmin())
         sessionStorage.removeItem('adminToken');
         toast.success('Successfully logged out!', { autoClose: 3000 });
         navigate('/admin/login');
@@ -367,7 +370,7 @@ const Dashboard: React.FC = () => {
           isOpen={isModalOpen}
           onRequestClose={closeModal}
           contentLabel="Confirm Delete"
-          className="w-96 p-6 bg-white rounded shadow-lg"
+          className="w-96 p-6 flex justify-center items-center bg-white rounded shadow-lg"
         >
           <h2 className="text-lg font-semibold mb-4">Are you sure you want to delete this user?</h2>
           <div className="space-x-4">

@@ -10,6 +10,7 @@ import { AppDispatch, RootState } from '../store/store'
 export const HomeUser:React.FC = () => {
  
   const {email}=useSelector((state:RootState)=>state.user)
+
   const dispatch = useDispatch<AppDispatch>();
 
   const navigate = useNavigate();

@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import React, { useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -8,7 +8,7 @@ const SignUpUser:React.FC=()=>{
  
    const [email,setEmail]=useState('')
    const [password,setPassword]=useState('')
-
+   const navigate=useNavigate()
    const handleSubmit=async(e:React.FormEvent)=>{
 
     e.preventDefault()
@@ -48,9 +48,10 @@ const SignUpUser:React.FC=()=>{
         draggable: false,
         theme: "dark",
       })
+      navigate('/')
       setEmail('');
       setPassword('');
-
+ 
     } catch (error:any) {
        
       

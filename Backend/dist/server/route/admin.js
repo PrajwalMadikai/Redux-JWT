@@ -13,5 +13,5 @@ router.get('/edit/:id', authMiddleware_1.default, adminController_1.default.edit
 router.post('/edit/:id', authMiddleware_1.default, adminController_1.default.editPost);
 router.post('/create', authMiddleware_1.default, adminController_1.default.createUser);
 router.delete('/delete/:id', authMiddleware_1.default, adminController_1.default.deleteUser);
-router.post('/logout', authMiddleware_1.default, adminController_1.default.logout);
+router.post('/logout', adminController_1.default.logout);
 exports.default = router;

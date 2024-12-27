@@ -1,9 +1,19 @@
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { setAdmin } from '../slices/adminSlice';
+import { AppDispatch } from '../store/store';
 
+interface TokenPayload{
+  email:string|null;
+  adminId:string|null
+}
 const AdminLogin: React.FC = () => {
+  const dispatch=useDispatch<AppDispatch>()
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -29,7 +39,10 @@ const AdminLogin: React.FC = () => {
           draggable: false,
           theme: 'dark',
         });
-
+        const tokens=response.data.token
+        let decodeToken=jwtDecode<TokenPayload>(tokens)
+        dispatch(setAdmin({email:decodeToken.email,adminId:decodeToken.adminId}))
+        console.log('admin redux:',decodeToken.email);
         
         if (response.data.token) {
           sessionStorage.setItem('adminToken', response.data.token);
